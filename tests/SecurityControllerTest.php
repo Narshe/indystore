@@ -36,10 +36,34 @@ class SecurityControllerTest extends WebTestCase
 
     }
 
-    public function testUserCannotLoginWithIncorrectCredentials()
-    {
+    public function testUserCanRememberLogInfos() {
+
         $email = 'hadrien.giraudeau@gmail.com';
-        $plainPassword = '12345';
+        $plainPassword = '123456';
+
+        $this->client->request('GET', '/login');
+
+        $crawler = $this->client->submitForm('Se connecter', [
+            'email' => $email,
+            'password' => $plainPassword,
+            '_remember_me' => true
+        ]);
+        
+        $cookieJar = $this->client->getCookieJar();
+        $cookieName = $cookieJar->get('REMEMBERME')->getName();
+        
+        $this->assertSame('REMEMBERME', $cookieName);
+
+    }
+
+    /**
+     * @dataProvider provideCredentials
+     * @param string $email
+     * @param string $plainPassword
+     * @param string $errMsg
+     */
+    public function testUserCannotLoginWithIncorrectCredentials(string $email, string $plainPassword, string $errMsg)
+    {
 
         $this->client->request('GET', '/login');
 
@@ -53,29 +77,10 @@ class SecurityControllerTest extends WebTestCase
         $crawler = $this->client->followRedirect();
         
         $this->assertPageTitleSame('Login');
-        $this->assertSelectorTextContains('div.alert', 'Invalid credentials.');
+        $this->assertSelectorTextContains('div.alert', $errMsg);
 
     }
 
-    public function testGuestMustCreateAccountBeforeLogin()
-    {
-        $email = "unknown@gmail.com";
-        $plainPassword = '123456';
-
-        $this->client->request('GET', '/login');
-
-        $crawler = $this->client->submitForm('Se connecter', [
-            'email' => $email,
-            'password' => $plainPassword
-        ]);
-                
-        $this->assertResponseStatusCodeSame(302, $this->client->getResponse()->getStatusCode());
-
-        $crawler = $this->client->followRedirect();
-        
-        $this->assertPageTitleSame('Login');
-        $this->assertSelectorTextContains('div.alert', 'Email could not be found');
-    }
 
     public function testAuthenticatedUserCannotAccessLoginForm()
     {
@@ -87,6 +92,17 @@ class SecurityControllerTest extends WebTestCase
         $crawler = $this->client->followRedirect();
 
         $this->assertPageTitleSame('Accueil');
+    }
+
+    /**
+     * @return Array
+     */
+    public function provideCredentials(): Array
+    {
+        return [
+            ['hadrien.giraudeau@gmail.com', '12345', 'Invalid credentials.'],
+            ['unknown@gmail.com', '123456', 'Email could not be found'],
+        ];
     }
 
 }

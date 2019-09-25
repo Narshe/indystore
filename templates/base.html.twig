@@ -7,7 +7,7 @@
     </head>
     <body>
         <header>
-            {% if is_granted('IS_AUTHENTICATED_FULLY') %}
+            {% if is_granted('IS_AUTHENTICATED_FULLY') or is_granted('IS_AUTHENTICATED_REMEMBERED') %}
                 <a href="#">{{ app.user.email }}</a>
                 {% if is_granted('ROLE_ADMIN') %}
                     <a href="{{ path('admin_home') }}">Accueil admin</a>
