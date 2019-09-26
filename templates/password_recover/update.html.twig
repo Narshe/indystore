@@ -1,0 +1,13 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Récupération de mot de passe{% endblock %}
+
+{% block body %}
+    {{ form_start(updateForm, {'action': path('update_password', {email:email, token:token})}) }}
+
+        {{ form_row(updateForm.password) }}
+recovery
+        <button class="btn" type="submit">Modifier le mot de passe</button>
+    {{ form_end(updateForm) }}
+
+{% endblock %}

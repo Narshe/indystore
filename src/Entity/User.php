@@ -35,6 +35,11 @@ class User implements UserInterface
      */
     private $password;
 
+    /**
+     * @ORM\Column(type="string", nullable=true)
+     */
+    private $password_token;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -92,6 +97,18 @@ class User implements UserInterface
     public function setPassword(string $password): self
     {
         $this->password = $password;
+
+        return $this;
+    }
+
+    public function getPasswordToken(): ?string
+    {
+        return $this->password_token;
+    }
+
+    public function setPasswordToken(string $token): self
+    {
+        $this->password_token = $token;
 
         return $this;
     }

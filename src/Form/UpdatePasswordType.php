@@ -2,36 +2,26 @@
 
 namespace App\Form;
 
-use App\Entity\User;
-//use PharIo\Manifest\Email;
 use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\Extension\Core\Type\PasswordType;
-use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Form\Extension\Core\Type\PasswordType;
+use Symfony\Component\Form\Extension\Core\Type\RepeatedType;
 use Symfony\Component\Validator\Constraints\NotBlank;
 use Symfony\Component\Validator\Constraints\Length;
-use Symfony\Component\Validator\Constraints\Email;
 
-class RegistrationFormType extends AbstractType
+class UpdatePasswordType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('email', null, [
-                'label' => 'Votre adresse email',
-                'constraints' => [
-                    new NotBlank([
-                        'message' => 'Entrez votre email'
-                    ]),
-                    new Email([
-                        'message' => 'Veuillez entrer une adresse mail valide'
-                    ])
-                ]
-            ])
-            ->add('plainPassword', PasswordType::class, [
-                'mapped' => false,
-                'label' => 'Mot de passe',
+            ->add('password', RepeatedType::class, [
+                'type' => PasswordType::class,
+                'invalid_message' => 'Les mot de passe doivent être identiquent',
+                'options' => ['attr' => ['class' => 'password-field']],
+                'required' => true,
+                'first_options'  => ['label' => 'Mot de passe'],
+                'second_options' => ['label' => 'Confirmation du mot de passe'],
                 'constraints' => [
                     new NotBlank([
                         'message' => 'Entrez votre mot de passe',
@@ -41,15 +31,15 @@ class RegistrationFormType extends AbstractType
                         'minMessage' => 'Votre mot de passe doit faire au moins {{ limit }} characters',
                         'max' => 4096,
                     ]),
-                ],
-            ])
+                ]
+            ]);  
         ;
     }
 
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
-            'data_class' => User::class,
+            // Configure your form options here
         ]);
     }
 }

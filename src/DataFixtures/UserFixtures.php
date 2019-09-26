@@ -14,29 +14,30 @@ class UserFixtures extends Fixture
 
     public function __construct(UserPasswordEncoderInterface $passwordEncoder)
     {
-        $this->passwordEncoder = $passwordEncoder;       
+        $this->passwordEncoder = $passwordEncoder;   
     }
 
     public function load(ObjectManager $manager)
     {
-        $hadri = new User();
-        $boboldo = new User();
-        $michel = new User();
+        $users = [
+            'hadrien.giraudeau@gmail.com' => ['ROLE_ADMIN'],
+            'baptiste.bonnand@gmail.com' => ['ROLE_ADMIN'],
+            'michel.michel@gmail.com' => ['ROLE_USER']
+        ];
+        
+        foreach($users as $email => $role) {
 
-        $hadri->setEmail('hadrien.giraudeau@gmail.com');
-        $hadri->setPassword($this->passwordEncoder->encodePassword($hadri, '123456'));
-        $hadri->setRoles(['ROLE_ADMIN']);
+            $user = new User();
+            $user->setEmail($email);
+            $user->setPassword($this->passwordEncoder->encodePassword($user, '123456'));
+            $user->setRoles($role);
+            
+            if(getenv('APP_ENV') == 'test') {
+                $user->setPasswordToken('passwordToken');
+            }
 
-        $boboldo->setEmail('baptiste.bonnand@gmail.com');
-        $boboldo->setPassword($this->passwordEncoder->encodePassword($boboldo, '123456'));
-        $boboldo->setRoles(['ROLE_ADMIN']);
-
-        $michel->setEmail('michel.michel@gmail.com');
-        $michel->setPassword($this->passwordEncoder->encodePassword($michel, '123456'));
-
-        $manager->persist($michel);
-        $manager->persist($hadri);
-        $manager->persist($boboldo);
+            $manager->persist($user);
+        }
 
         $manager->flush();
     }

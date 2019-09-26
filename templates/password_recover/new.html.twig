@@ -1,0 +1,12 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Récupération du mot de passe{% endblock %}
+
+{% block body %}
+    {{ form_start(recoveryForm) }}
+
+    {{ form_row(recoveryForm.email) }}
+
+    {{ form_end(recoveryForm) }}
+
+{% endblock %}
