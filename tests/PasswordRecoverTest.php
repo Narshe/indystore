@@ -17,8 +17,6 @@ class PasswordRecoverTest extends WebTestCase
 
         $crawler = $client->request('GET', '/password/recover');
 
-        $this->assertResponseIsSuccessful();
-
         $client->submitForm('Envoyer', [
             'recovery_password[email]' => $email
         ]);

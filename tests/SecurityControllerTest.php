@@ -20,8 +20,6 @@ class SecurityControllerTest extends WebTestCase
 
         $this->client->request('GET', '/login');
 
-        $this->assertResponseIsSuccessful();
-
         $crawler = $this->client->submitForm('Se connecter', [
             'email' => $email,
             'password' => $plainPassword

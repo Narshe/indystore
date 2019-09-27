@@ -14,8 +14,6 @@ class RegistrationControllerTest extends WebTestCase
 
         $client = static::createClient();
         $crawler = $client->request('GET', '/register');
-
-        $this->assertResponseIsSuccessful();
         
         $client->submitForm('S\'inscrire', [
             'registration_form[email]' => $email,
@@ -41,8 +39,6 @@ class RegistrationControllerTest extends WebTestCase
 
         $client = static::createClient();
         $crawler = $client->request('GET', '/register');
-
-        $this->assertResponseIsSuccessful();
         
         $client->submitForm('S\'inscrire', [
             'registration_form[email]' => $email,
