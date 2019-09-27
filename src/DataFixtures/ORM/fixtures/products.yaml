@@ -1,0 +1,10 @@
+App\Entity\Product:
+    product{1..20}:
+        name: '<word()>'
+        description: '<text()>'
+        created_at: '<date_create()>'
+        updated_at: '<date_create()>'
+        price: '<randomDigit()>'
+        visible: 1
+        detail_id: 0
+        stock: '<randomDigit()>'

@@ -10,15 +10,17 @@ class RouteTest extends WebTestCase
     /**
      * @dataProvider unAuthenticatedRoutes
      * @param string $url
-     * @param string $method
+     * @param array $method
      */
-    public function testGuestCanAccessUnauthenticatedRoutes(string $url, string $method)
+    public function testGuestCanAccessUnauthenticatedRoutes(string $url, array $method)
     {
         $client = static::createClient();
 
-        $client->request($method, $url);
+        foreach($method as $m) {
+            $client->request($m, $url);
+            $this->assertResponseIsSuccessful();
+        }
 
-        $this->assertResponseIsSuccessful();
     }
 
     /*
@@ -31,19 +33,19 @@ class RouteTest extends WebTestCase
     /**
      * @dataProvider adminRoutes
      * @param string $url
-     * @param string $method
+     * @param array $method
      */
-    public function testAuthenticadAdminCanAccessAdminRoutes(string $url, string $method)
+    public function testAuthenticadAdminCanAccessAdminRoutes(string $url, array $method)
     {   
         $client = static::createClient([], [
             'PHP_AUTH_USER' => 'hadrien.giraudeau@gmail.com',
             'PHP_AUTH_PW' => '123456'
         ]);
-
-        $client->request($method, $url);
-
-        $this->assertResponseIsSuccessful();
-
+            
+        foreach($method as $m) {
+            $client->request($m, $url);
+            $this->assertResponseIsSuccessful();
+        }
     }
 
     /*
@@ -56,18 +58,20 @@ class RouteTest extends WebTestCase
     /**
      * @dataProvider adminRoutes
      * @param string $url
-     * @param string $method
+     * @param array $method
      */
-    public function testAuthenticatedUserCannotAccessAdminRoutes(string $url, string $method)
+    public function testAuthenticatedUserCannotAccessAdminRoutes(string $url, array $method)
     {
         $client = static::createClient([], [
             'PHP_AUTH_USER' => 'michel.michel@gmail.com',
             'PHP_AUTH_PW' => '123456'
         ]);
+        
+        foreach($method as $m) {
+            $client->request($m, $url);
+            $this->assertResponseStatusCodeSame(403);
+        }
 
-        $client->request($method, $url);
-
-        $this->assertResponseStatusCodeSame(403);
     }
     
 
@@ -77,11 +81,11 @@ class RouteTest extends WebTestCase
     public function unAuthenticatedRoutes(): Array
     {
         return [
-            ['/', 'GET'],
-            ['/register', 'GET'],
-            ['/register', 'POST'],
-            ['/login', 'GET'],
-            ['/password/recover', 'GET'],
+            ['/', ['GET']],
+            ['/register', ['GET', 'POST']],
+            ['/login', ['GET']],
+            ['/password/recover', ['GET']],
+            ['/games', ['GET']]
         ];
     }
 
@@ -99,7 +103,10 @@ class RouteTest extends WebTestCase
     public function adminRoutes(): Array
     {
         return [
-            ['/admin', 'GET']
+            ['/admin', ['GET']],
+            ['/admin/games', ['GET']],
+            ['/admin/games/edit/10', ['GET', 'PUT']],
+         //   ['/admin/games/10', ['DELETE']]
         ];
     }
 
