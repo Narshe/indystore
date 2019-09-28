@@ -8,7 +8,7 @@ use App\Entity\Product;
 
 class ProductTest extends WebTestCase
 {
-    public function testGuestCanSeeProducts()
+    public function testGuestCanSeeAllProducts()
     {
         $client = static::createClient();
 
@@ -20,14 +20,33 @@ class ProductTest extends WebTestCase
         );
     }
 
-    public function testAdminCanSeeOneProduct()
-    {
-        $client = static::createClient([], [
-            'PHP_AUTH_USER' => 'hadrien.giraudeau@gmail.com',
-            'PHP_AUTH_PW' => '123456'
-        ]);
+    public function testGuestCanSeeAllProductsWithXhrRequest()
+    {   
+        $client = static::createClient();
+        $client->xmlHttpRequest('GET', '/games');
 
-        $client->request('GET', '/admin/games/10');
+        $this->assertEquals(
+            20,
+            count(json_decode($client->getResponse()->getContent(), true)["games"])
+        );
+    }
+    
+    public function testGuestCanSeeOneProductsWithXhrRequest()
+    {   
+        $client = static::createClient();
+        $client->xmlHttpRequest('GET', '/games/10');
+
+        $this->assertEquals(
+            1,
+            count(json_decode($client->getResponse()->getContent(), true))
+        );
+    }
+
+    public function testGuestCanSeeOneProduct()
+    {
+        $client = static::createClient();
+
+        $client->request('GET', '/games/10');
         
         $this->assertPageTitleSame('Produit');
         $this->assertResponseIsSuccessful();
@@ -107,5 +126,48 @@ class ProductTest extends WebTestCase
             19,
             $crawler->filter('.products div.product')
         );
+    }
+
+
+    /** TODO REFACTOR VALIDATION */
+    /**
+     * @dataProvider validateProductProvider
+     * @param  $name
+     * @param $price
+     * @param $stock
+     * @param $visible
+     * @param $errorMsg
+     */
+    public function testValidateProduct($name, $price, $stock, $visible, $errorMsg)
+    {
+        $client = static::createClient([], [
+            'PHP_AUTH_USER' => 'hadrien.giraudeau@gmail.com',
+            'PHP_AUTH_PW' => '123456'
+        ]);
+
+        $client->request('GET', '/admin/games/new');
+
+        $client->submitForm('Ajouter le produit', [
+            'product[name]' => $name,
+            'product[price]' => $price,
+            'product[stock]' => $stock,
+            'product[visible]' => $visible,
+        ]);
+
+        $this->assertSelectorTextContains('li', $errorMsg);
+    }
+
+    /**
+     * @return Array
+     */
+    public function validateProductProvider(): Array
+    {
+        return [
+            ["", 5.3,5,true, "Le nom le peut pas être vide"],
+            ["name", null,5,true, "ous devez entrer un prix"],
+            ["name", "test",5,true, "This value is not valid."],
+            ["name", 5.3,null,true, "Vous devez entrer une quantité"],
+            ["name", 5.3,"test",true, "This value is not valid."],
+        ];
     }
 }

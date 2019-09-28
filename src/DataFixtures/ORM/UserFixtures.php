@@ -19,13 +19,8 @@ class UserFixtures extends Fixture
 
     public function load(ObjectManager $manager)
     {
-        $users = [
-            'hadrien.giraudeau@gmail.com' => ['ROLE_ADMIN'],
-            'baptiste.bonnand@gmail.com' => ['ROLE_ADMIN'],
-            'michel.michel@gmail.com' => ['ROLE_USER']
-        ];
-        
-        foreach($users as $email => $role) {
+     
+        foreach($this->getUsersData() as $email => $role) {
 
             $user = new User();
             $user->setEmail($email);
@@ -40,5 +35,17 @@ class UserFixtures extends Fixture
         }
 
         $manager->flush();
+    }
+
+    /**
+     * @return Array
+     */
+    public function getUsersData(): Array
+    {
+        return [
+            'hadrien.giraudeau@gmail.com' => ['ROLE_ADMIN'],
+            'baptiste.bonnand@gmail.com' => ['ROLE_ADMIN'],
+            'michel.michel@gmail.com' => ['ROLE_USER']
+        ];
     }
 }

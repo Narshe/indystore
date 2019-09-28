@@ -26,17 +26,6 @@ class ProductController extends AbstractController
         ]);
     }
 
-    /**
-     * @Route("/admin/games/{id<\d+>}", methods={"GET"}, name="admin_game_show")
-     * @param Product $product
-     * @return Response
-     */
-    public function show(Product $product): Response
-    {
-        return $this->render('admin/product/show.html.twig', [
-            'game' => $product
-        ]);
-    }
 
     /**
      * @Route("/admin/games/new", name="admin_game_new")

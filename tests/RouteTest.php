@@ -84,8 +84,10 @@ class RouteTest extends WebTestCase
             ['/', ['GET']],
             ['/register', ['GET', 'POST']],
             ['/login', ['GET']],
-            ['/password/recover', ['GET']],
-            ['/games', ['GET']]
+            ['/password/recover', ['GET', 'POST']],
+            ['/password/recover/hadrien.giraudeau@gmail.com/passwordToken', ['GET', 'PUT']],
+            ['/games', ['GET']],
+            ['/games/10', ['GET']]
         ];
     }
 

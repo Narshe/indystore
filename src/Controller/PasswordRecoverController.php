@@ -18,7 +18,7 @@ use App\Form\UpdatePasswordType;
 class PasswordRecoverController extends AbstractController
 {
     /**
-     * @Route("/password/recover", name="password_recover")
+     * @Route("/password/recover", methods={"GET","POST"}, name="password_recover")
      * @param Request $request
      * @param MailerInterface $
      * @return Response
@@ -65,7 +65,7 @@ class PasswordRecoverController extends AbstractController
     }
 
     /**
-     * @Route("/password/recover/{email}/{token}", name="update_password")
+     * @Route("/password/recover/{email}/{token}", methods={"GET", "PUT"}, name="update_password")
      * @param Request $request
      * @param string $email
      * @param string $token
@@ -82,7 +82,9 @@ class PasswordRecoverController extends AbstractController
             throw new NotFoundHttpException('Cette page n\'existe pas');
         }
 
-        $form = $this->createForm(UpdatePasswordType::class, null);
+        $form = $this->createForm(UpdatePasswordType::class, null, [
+            'method' => 'PUT'
+        ]);
         
         $form->handleRequest($request);
 
