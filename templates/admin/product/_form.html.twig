@@ -1,0 +1,12 @@
+{{ form_start(productForm) }}
+
+    {{ form_row(productForm.name) }}
+    {{ form_row(productForm.description) }}
+    {{ form_row(productForm.price) }}
+    {{ form_row(productForm.stock) }}
+    {{ form_row(productForm.detail_id) }}
+    {{ form_row(productForm.visible) }}
+
+
+    <button class="btn" type="submit">{{ button }}</button>
+{{ form_end(productForm) }}

@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Tests;
+namespace App\Tests\Auth;
 
-use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
+use App\Tests\WebTestCase;
 
 class SecurityControllerTest extends WebTestCase
 {   
@@ -10,7 +10,7 @@ class SecurityControllerTest extends WebTestCase
 
     public function setUp()
     {
-        $this->client = static::createClient();
+        $this->client = $this->loginAs('guest');
     }
     
     public function testUserCanLoginWithCorrectCredentials()

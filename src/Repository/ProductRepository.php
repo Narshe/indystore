@@ -19,6 +19,35 @@ class ProductRepository extends ServiceEntityRepository
         parent::__construct($registry, Product::class);
     }
 
+    /**
+     * @return Array
+     */
+    public function findAllVisible()
+    {
+        return $this->createQueryBuilder('p')
+            ->select('p.id, p.name, p.description, p.stock, p.price')
+            ->where('p.visible = 1')
+            ->orderBy('p.created_at', 'ASC')
+            ->getQuery()
+            ->getResult()
+        ;
+    }
+
+    /**
+     * @param int $id
+     * @return Product
+     */
+    public function findOneVisible(int $id)
+    {
+        return $this->createQueryBuilder('p')
+            ->select('p.id, p.name, p.description, p.stock, p.price')
+            ->andwhere("p.id = {$id}")
+            ->andwhere('p.visible = 1')
+            ->orderBy('p.created_at', 'ASC')
+            ->getQuery()
+            ->getResult()
+        ;
+    }
     // /**
     //  * @return Product[] Returns an array of Product objects
     //  */

@@ -1,9 +1,9 @@
 <?php
 
-namespace App\Tests;
+namespace App\Tests\Auth;
 
+use App\Tests\WebTestCase;
 use App\Entity\User;
-use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 
 class RegistrationControllerTest extends WebTestCase
 {
@@ -12,7 +12,7 @@ class RegistrationControllerTest extends WebTestCase
         $email = "testmail@gmail.com";
         $plainPassword = '123456';
 
-        $client = static::createClient();
+        $client = $this->loginAs('guest');
         $crawler = $client->request('GET', '/register');
         
         $client->submitForm('S\'inscrire', [
@@ -37,7 +37,7 @@ class RegistrationControllerTest extends WebTestCase
     public function testRegisterValidations(string $email, string $password, string $errorMsg)
     {
 
-        $client = static::createClient();
+        $client = $this->loginAs('guest');
         $crawler = $client->request('GET', '/register');
         
         $client->submitForm('S\'inscrire', [

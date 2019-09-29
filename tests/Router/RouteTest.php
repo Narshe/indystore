@@ -2,7 +2,6 @@
 
 namespace App\Tests;
 
-use phpDocumentor\Reflection\Types\Array_;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 
 class RouteTest extends WebTestCase

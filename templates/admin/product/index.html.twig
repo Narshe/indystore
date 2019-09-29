@@ -1,4 +1,4 @@
-{% extends 'base.html.twig' %}
+{% extends 'admin/base.html.twig' %}
 
 {% block title %}Produits{% endblock %}
 
@@ -18,5 +18,8 @@
                 </form>
             </div>
         {% endfor %}
+    </div>
+    <div class="create_product">
+        <button><a href="{{ path('admin_game_new') }}">Ajouter un produit</button>
     </div>
 {% endblock %}

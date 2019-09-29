@@ -6,8 +6,6 @@ use App\Entity\Product;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use Symfony\Component\Validator\Constraints\NotBlank;
-use Symfony\Component\Validator\Constraints\Type;
 use Symfony\Component\Form\Extension\Core\Type\NumberType;
 use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
@@ -20,12 +18,7 @@ class ProductType extends AbstractType
     {
         $builder
             ->add('name', TextType::class, [
-                'label' => 'Nom',
-                'constraints' => [
-                    new NotBlank([
-                        'message' => 'Le nom le peut pas être vide'
-                    ])
-                ]
+                'label' => 'Nom'
             ])
             ->add('description', TextareaType::class, [
                 'label' => 'Description',
@@ -33,31 +26,15 @@ class ProductType extends AbstractType
             ->add('detail_id')
             ->add('price', NumberType::class, [
                 'label' => 'Prix',
-                'constraints' => [
-                    new NotBlank([
-                        'message' => 'Vous devez entrer un prix'
-                    ]),
-                    new Type([
-                        'type' => 'float', 
-                        'message' => 'Le prix doit être de type float'
-                    ])
-               
-                ]
+                'invalid_message' => "Le prix doit être de type float"
             ])
             ->add('stock', IntegerType::class, [
                 'label' => 'Quantité',
-                'constraints' => [
-                    new NotBlank([
-                        'message' => 'Vous devez entrer une quantité'
-                    ]),
-                    new Type([
-                        'type' => 'int', 
-                        'message' => 'Le prix doit être de type integer'
-                    ])
-
-                ]
+                'invalid_message' => "La quantité doit être de type integer"
             ])
-            ->add('visible', CheckboxType::class)
+            ->add('visible', CheckboxType::class, [
+                'invalid_message' => "La visibilité doit être de type boolean"
+            ])
         ;
     }
 

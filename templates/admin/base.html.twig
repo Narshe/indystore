@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <title>{% block title %}Admin{% endblock %}</title>
+        {% block stylesheets %}{% endblock %}
+    </head>
+    <body>
+        <header>
+            <a href="{{ path('home') }}">Accueil site</a>
+            <a href="{{ path('admin_home') }}">Accueil admin</a>
+            <a href="{{ path('admin_game_index') }}">Produits</a>
+        </header>
+        {% block body %}{% endblock %}
+        {% block javascripts %}{% endblock %}
+    </body>
+</html>

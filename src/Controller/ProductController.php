@@ -4,6 +4,8 @@ namespace App\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Routing\Annotation\Route;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Entity;
+
 
 use App\Entity\Product;
 use Symfony\Component\HttpFoundation\Response;
@@ -18,9 +20,8 @@ class ProductController extends AbstractController
      */
     public function index(Request $request): Response
     {   
-        $products = $this->getDoctrine()->getRepository(Product::class)->findAll();
-
-
+        $products = $this->getDoctrine()->getRepository(Product::class)->findAllVisible();
+       
         if ($request->isXmlHttpRequest()) {
             return $this->json(['games' => $products]);
         }
@@ -31,13 +32,14 @@ class ProductController extends AbstractController
     }
 
         /**
-     * @Route("/games/{id<\d+>}", methods={"GET"}, name="admin_game_show")
+     * @Route("/games/{id<\d+>}", methods={"GET"}, name="games_show")
+     * @Entity("post", expr="repository.findOneVisible(id)")
      * @param Request $request
      * @param Product $product
      * @return Response
      */
     public function show(Request $request, Product $product): Response
-    {
+    {   
 
         if ($request->isXmlHttpRequest()) {
             return $this->json(['game' => $product]);

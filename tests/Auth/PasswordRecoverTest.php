@@ -1,26 +1,33 @@
 <?php
 
-namespace App\Tests;
+namespace App\Tests\Auth;
 
-use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
+use App\Tests\WebTestCase;
 use Symfony\Component\HttpFoundation\Response;
 
 use App\Entity\User;
 
 class PasswordRecoverTest extends WebTestCase
-{
+{   
+    private $client;
+
+    public function setUp()
+    {
+        $this->client = $this->loginAs('guest');
+    }
+
     public function testGuestCanGenerateResetToken()
     {      
         $email = 'hadrien.giraudeau@gmail.com';
-        $client = static::createClient();
 
-        $crawler = $client->request('GET', '/password/recover');
 
-        $client->submitForm('Envoyer', [
+        $crawler = $this->client->request('GET', '/password/recover');
+
+        $this->client->submitForm('Envoyer', [
             'recovery_password[email]' => $email
         ]);
 
-        $user = $client->getContainer()->get('doctrine')->getRepository(User::class)->findOneBy(['email' => $email]);
+        $user = $this->client->getContainer()->get('doctrine')->getRepository(User::class)->findOneBy(['email' => $email]);
         $this->assertNotNull($user->getPasswordToken());
     }
 
@@ -30,18 +37,18 @@ class PasswordRecoverTest extends WebTestCase
         $token = 'passwordToken';
         $newPassword = '1234567';
 
-        $client = static::createClient();
+        $this->client = $this->loginAs('guest');
        
-        $client->request('GET', "/password/recover/{$email}/{$token}");
+        $this->client->request('GET', "/password/recover/{$email}/{$token}");
 
         $this->assertPageTitleSame('Récupération de mot de passe');
 
-        $client->submitForm('Modifier le mot de passe', [
+        $this->client->submitForm('Modifier le mot de passe', [
             'update_password[password][first]' => $newPassword,
             'update_password[password][second]' => $newPassword
         ]);
 
-        $crawler = $client->followRedirect();
+        $crawler = $this->client->followRedirect();
 
         $this->assertPageTitleSame('Login');
         /** Check le flash quand il sera implémenté */
@@ -50,12 +57,10 @@ class PasswordRecoverTest extends WebTestCase
     public function testGuestCanThrowExceptionWithInvalidToken()
     {
         $email = 'hadrien.giraudeau@gmail.com';
-
-        $client = static::createClient();
         
-        $crawler = $client->request('GET', "/password/recover/{$email}/12345");
+        $crawler = $this->client->request('GET', "/password/recover/{$email}/12345");
 
-        $this->assertSame(Response::HTTP_NOT_FOUND, $client->getResponse()->getStatusCode());
+        $this->assertSame(Response::HTTP_NOT_FOUND, $this->client->getResponse()->getStatusCode());
 
     }
 
@@ -69,12 +74,10 @@ class PasswordRecoverTest extends WebTestCase
     {
         $email = 'hadrien.giraudeau@gmail.com';
         $token = 'passwordToken';
+               
+        $this->client->request('GET', "/password/recover/{$email}/{$token}");
 
-        $client = static::createClient();
-       
-        $client->request('GET', "/password/recover/{$email}/{$token}");
-
-        $client->submitForm('Modifier le mot de passe', [
+        $this->client->submitForm('Modifier le mot de passe', [
             'update_password[password][first]' => $password,
             'update_password[password][second]' => $passwordConfirm
         ]);

@@ -1,19 +1,8 @@
-{% extends 'base.html.twig' %}
+{% extends 'admin/base.html.twig' %}
 
 {% block title %}Editer un produit{% endblock %}
 
 {% block body %}
-        {{ form_start(productForm) }}
-        
-        {{ form_row(productForm.name) }}
-        {{ form_row(productForm.description) }}
-        {{ form_row(productForm.price) }}
-        {{ form_row(productForm.stock) }}
-        {{ form_row(productForm.detail_id) }}
-        {{ form_row(productForm.visible) }}
-
-
-        <button class="btn" type="submit">Modifier le produit</button>
-    {{ form_end(productForm) }}
-
+    <h1>Modification du produit</h1>
+    {{ include('admin/product/_form.html.twig', {form: productForm, button: 'Modifier le produit'}) }}
 {% endblock %}

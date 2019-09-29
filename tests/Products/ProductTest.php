@@ -1,16 +1,15 @@
 <?php
 
-namespace App\Tests;
+namespace App\Tests\Products;
 
-use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
-
+use App\Tests\WebTestCase;
 use App\Entity\Product;
 
 class ProductTest extends WebTestCase
 {
     public function testGuestCanSeeAllProducts()
     {
-        $client = static::createClient();
+        $client = $this->loginAs('guest');
 
         $crawler = $client->request('GET', '/games');
 
@@ -22,7 +21,7 @@ class ProductTest extends WebTestCase
 
     public function testGuestCanSeeAllProductsWithXhrRequest()
     {   
-        $client = static::createClient();
+        $client = $this->loginAs('guest');
         $client->xmlHttpRequest('GET', '/games');
 
         $this->assertEquals(
@@ -33,7 +32,7 @@ class ProductTest extends WebTestCase
     
     public function testGuestCanSeeOneProductsWithXhrRequest()
     {   
-        $client = static::createClient();
+        $client = $this->loginAs('guest');
         $client->xmlHttpRequest('GET', '/games/10');
 
         $this->assertNotNull(json_decode($client->getResponse()->getContent(), true));
@@ -41,7 +40,7 @@ class ProductTest extends WebTestCase
 
     public function testGuestCanSeeOneProduct()
     {
-        $client = static::createClient();
+        $client = $this->loginAs('guest');
 
         $client->request('GET', '/games/10');
         
@@ -58,10 +57,7 @@ class ProductTest extends WebTestCase
         $product->setPrice(200);
         $product->setStock(10);
 
-        $client = static::createClient([], [
-            'PHP_AUTH_USER' => 'hadrien.giraudeau@gmail.com',
-            'PHP_AUTH_PW' => '123456'
-        ]);
+        $client = $this->loginAs('admin');
 
         $client->request('GET', '/admin/games/new');
 
@@ -84,10 +80,7 @@ class ProductTest extends WebTestCase
     {   
         $newName = 'Produit modifié';
 
-        $client = static::createClient([], [
-            'PHP_AUTH_USER' => 'hadrien.giraudeau@gmail.com',
-            'PHP_AUTH_PW' => '123456'
-        ]);
+        $client = $this->loginAs('admin');
 
         $client->request('GET', '/admin/games');
 
@@ -108,10 +101,7 @@ class ProductTest extends WebTestCase
     public function testAdminCanDeleteProduct()
     {
 
-        $client = static::createClient([], [
-            'PHP_AUTH_USER' => 'hadrien.giraudeau@gmail.com',
-            'PHP_AUTH_PW' => '123456'
-        ]);
+        $client = $this->loginAs('admin');
 
         $client->request('GET', '/admin/games');
         
@@ -124,47 +114,5 @@ class ProductTest extends WebTestCase
             $crawler->filter('.products div.product')
         );
     }
-
-
-    /** TODO REFACTOR VALIDATION */
-    /**
-     * @dataProvider validateProductProvider
-     * @param  $name
-     * @param $price
-     * @param $stock
-     * @param $visible
-     * @param $errorMsg
-     */
-    public function testValidateProduct($name, $price, $stock, $visible, $errorMsg)
-    {
-        $client = static::createClient([], [
-            'PHP_AUTH_USER' => 'hadrien.giraudeau@gmail.com',
-            'PHP_AUTH_PW' => '123456'
-        ]);
-
-        $client->request('GET', '/admin/games/new');
-
-        $client->submitForm('Ajouter le produit', [
-            'product[name]' => $name,
-            'product[price]' => $price,
-            'product[stock]' => $stock,
-            'product[visible]' => $visible,
-        ]);
-
-        $this->assertSelectorTextContains('li', $errorMsg);
-    }
-
-    /**
-     * @return Array
-     */
-    public function validateProductProvider(): Array
-    {
-        return [
-            ["", 5.3,5,true, "Le nom le peut pas être vide"],
-            ["name", null,5,true, "ous devez entrer un prix"],
-            ["name", "test",5,true, "This value is not valid."],
-            ["name", 5.3,null,true, "Vous devez entrer une quantité"],
-            ["name", 5.3,"test",true, "This value is not valid."],
-        ];
-    }
+    
 }

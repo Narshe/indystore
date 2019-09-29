@@ -4,6 +4,7 @@ namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\ProductRepository")
@@ -20,6 +21,9 @@ class Product
 
     /**
      * @ORM\Column(type="string", length=255, unique=true)
+     * @Assert\NotBlank(
+     *  message="Vous devez remplir le nom du produit"
+     * )
      */
     private $name;
 
@@ -34,12 +38,26 @@ class Product
     private $detail_id;
 
     /**
-     * @ORM\Column(type="integer")
+     * @ORM\Column(type="float")
+     * @Assert\NotBlank(
+     *   message="Vous devez renseigner le prix du produit"
+     * )
+     * @Assert\Type(
+     *   type="float",
+     *   message="Le prix doit être de type {{ type }}"
+     * )
      */
     private $price;
 
     /**
      * @ORM\Column(type="integer")
+     * @Assert\NotBlank(
+     *   message="Vous devez renseigner la quatité du produit"
+     * )
+     * @Assert\Type(
+     *   type="integer",
+     *   message="La quantité doit être de type {{ type }}"
+     * )
      */
     private $stock;
 
@@ -55,6 +73,10 @@ class Product
 
     /**
      * @ORM\Column(type="boolean")
+     * @Assert\Type(
+     *   type="boolean",
+     *   message="La visibilité doit être de type {{ type }}"
+     * )
      */
     private $visible;
 
@@ -108,12 +130,12 @@ class Product
         return $this;
     }
 
-    public function getPrice(): ?int
+    public function getPrice(): ?float
     {
         return $this->price;
     }
 
-    public function setPrice(int $price): self
+    public function setPrice(float $price): self
     {
         $this->price = $price;
 
