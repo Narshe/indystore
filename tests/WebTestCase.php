@@ -1,13 +1,17 @@
 <?php
 
 namespace App\Tests;
-use Symfony\Bundle\FrameworkBundle\Test\WebTestCase as BaseWebTestCase; 
+use Hautelook\AliceBundle\PhpUnit\RecreateDatabaseTrait;
+use Symfony\Bundle\FrameworkBundle\Test\WebTestCase as BaseWebTestCase;
 
 class WebTestCase extends BaseWebTestCase
 {
+    use RecreateDatabaseTrait;
 
+    
     public function loginAs(string $role, array $credentials = []) {
-
+        
+        
         $users = [
             'guest' => [],
             'user' => [
@@ -25,5 +29,5 @@ class WebTestCase extends BaseWebTestCase
         return static::createClient([], $cred);
     }
 
-
+    
 }

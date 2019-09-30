@@ -2,7 +2,7 @@
 
 namespace App\Tests;
 
-use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
+use App\Tests\WebTestCase;
 
 class RouteTest extends WebTestCase
 {   

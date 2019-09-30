@@ -1,0 +1,16 @@
+App\Entity\User:
+    user1:
+        email: 'hadrien.giraudeau@gmail.com'
+        password: '123456'
+        roles: '[ROLE_ADMIN]'
+        passwordToken: 'passwordToken'
+    user2:
+        email: 'baptiste.bonnand@gmail.com'
+        password: '123456'
+        roles: '[ROLE_ADMIN]'
+        passwordToken: 'passwordToken'
+    user3:
+        email: 'michel.michel@gmail.com'
+        password: '123456'
+        roles: '[ROLE_USER]'
+        passwordToken: 'passwordToken'

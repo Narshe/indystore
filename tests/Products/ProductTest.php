@@ -4,6 +4,8 @@ namespace App\Tests\Products;
 
 use App\Tests\WebTestCase;
 use App\Entity\Product;
+use APp\Entity\User;
+
 
 class ProductTest extends WebTestCase
 {
@@ -54,13 +56,14 @@ class ProductTest extends WebTestCase
         $product = new Product();
         $product->setName("Nom de test");
         $product->setDescription("Description");
-        $product->setPrice(200);
+        $product->setPrice(200.25);
         $product->setStock(10);
 
         $client = $this->loginAs('admin');
-
+        
         $client->request('GET', '/admin/games/new');
 
+        $this->assertResponseIsSuccessful();
         $client->submitForm('Ajouter le produit', [
             'product[name]' => $product->getName(),
             'product[description]' => $product->getDescription(),
