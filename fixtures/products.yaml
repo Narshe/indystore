@@ -3,6 +3,7 @@ App\Entity\Product:
         name (unique): '<word()>'
         description: '<text()>'
         created_at: '<date_create()>'
+        category: '@category*'
         updated_at: '<date_create()>'
         price: '<randomDigit()>'
         visible: 1

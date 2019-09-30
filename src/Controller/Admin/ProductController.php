@@ -73,6 +73,7 @@ class ProductController extends AbstractController
          if($form->isSubmitted() && $form->isValid()) {
             
             $em = $this->getDoctrine()->getManager();
+            $product->setUpdatedAt(new \DateTime());
             $em->flush();
 
             return $this->redirectToRoute('admin_game_index');

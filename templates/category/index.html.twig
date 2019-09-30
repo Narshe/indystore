@@ -1,0 +1,5 @@
+<ul class="categories">
+    {% for category in categories %}
+        <li class="category"><a href="{{ path('games_index') }}?category={{ category.name }}">{{ category.name }}</a></li>
+    {% endfor %}
+</ul>

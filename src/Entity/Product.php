@@ -6,6 +6,9 @@ use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Validator\Constraints as Assert;
 
+use App\Entity\Category;
+
+
 /**
  * @ORM\Entity(repositoryClass="App\Repository\ProductRepository")
  * @UniqueEntity("name")
@@ -79,6 +82,13 @@ class Product
      * )
      */
     private $visible;
+
+
+    /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\Category", inversedBy="products")
+     */
+    private $category;
+
 
     public function __construct()
     {
@@ -189,4 +199,24 @@ class Product
 
         return $this;
     }
+
+    /**
+     * @return Category
+     */
+    public function getCategory(): Category
+    {
+        return $this->category;
+    }
+
+    /**
+     * @param Category $category
+     * @return self
+     */
+    public function setCategory(Category $category): self
+    {
+        $this->category = $category;
+
+        return $this;   
+    }
+
 }

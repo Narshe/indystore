@@ -46,7 +46,7 @@ class RegistrationControllerTest extends WebTestCase
         ]);
 
         $this->assertPageTitleSame('Register');
-        $this->assertSelectorTextContains('li', $errorMsg);
+        $this->assertSelectorTextContains('form[name="registration_form"] li', $errorMsg);
     }
 
     /**

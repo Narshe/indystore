@@ -3,14 +3,14 @@
 {% block title %}Jeux{% endblock %}
 
 {% block body %}
-   
+
+    <h1>{{ category is same as ('all')? "Nos produits" : "Nos #{category}" }}</h1>
     <div class="products">
         {% for game in games %}
             <div class="product">
                 <p><a href="{{ path('games_show', {id: game.id}) }}">{{ game.name }}</a></p>
                 <p>Description: {{ game.description }}</p>
                 <p>Prix: {{ game.price }}</p>
-                <p>Stock: {{ game.stock }}</p>
             </div>
         {% endfor %}
     </div>

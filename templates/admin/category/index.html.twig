@@ -1,0 +1,23 @@
+{% extends 'admin/base.html.twig' %}
+
+{% block title %}Catégories{% endblock %}
+
+{% block body %}
+    <div class="categories">
+        {% for category in categories %}
+            <div class="category">
+                <p>Nom: {{ category.name }}</p>
+                <p>Slug: {{ category.slug }}</p>
+                <a href="{{ path('admin_category_edit', {id: category.id}) }}">Editer</a>
+                <form method="post" action="{{ path('admin_category_destroy', {id: category.id}) }}">
+                    <input type="hidden" name="_method" value="DELETE" />
+                    <input type="hidden" name="_csrf_token" value="{{ csrf_token('delete_category') }}">
+                    <button type="submit" name="delete_button">Supprimer</button>
+                </form>
+            </div>
+        {% endfor %}
+    </div>
+    <div class="create_category">
+        <button><a href="{{ path('admin_category_new') }}">Ajouter une nouvelle catégorie</button>
+    </div>
+{% endblock %}

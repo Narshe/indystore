@@ -82,7 +82,7 @@ class PasswordRecoverTest extends WebTestCase
             'update_password[password][second]' => $passwordConfirm
         ]);
         
-        $this->assertSelectorTextContains('li', $errorMsg);
+        $this->assertSelectorTextContains('form[name="update_password"] li', $errorMsg);
 
     }
 
