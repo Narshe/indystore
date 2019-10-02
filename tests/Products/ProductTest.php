@@ -70,6 +70,7 @@ class ProductTest extends WebTestCase
             'product[price]' => $product->getPrice(),
             'product[stock]' => $product->getStock(),
             'product[detail_id]' => $product->getDetailId(),
+            'product[category]' => 1,
             'product[visible]' => $product->getVisible(),
         ]);
 
@@ -93,6 +94,7 @@ class ProductTest extends WebTestCase
 
         $client->submitForm('Modifier le produit', [
             'product[name]' => $newName,
+            'product[category]' => 2
         ]);
 
         $client->followRedirect();

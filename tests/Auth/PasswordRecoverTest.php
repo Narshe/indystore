@@ -20,7 +20,6 @@ class PasswordRecoverTest extends WebTestCase
     {      
         $email = 'hadrien.giraudeau@gmail.com';
 
-
         $crawler = $this->client->request('GET', '/password/recover');
 
         $this->client->submitForm('Envoyer', [
