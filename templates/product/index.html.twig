@@ -11,6 +11,9 @@
                 <p><a href="{{ path('games_show', {id: game.id}) }}">{{ game.name }}</a></p>
                 <p>Description: {{ game.description }}</p>
                 <p>Prix: {{ game.price }}</p>
+                <form method="POST" action="{{ path('cart_add', {id:game.id}) }}">
+                    <button type="submit">Ajouter au panier</button>
+                </form>
             </div>
         {% endfor %}
     </div>

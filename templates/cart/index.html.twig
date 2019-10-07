@@ -1,0 +1,38 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Votre panier{% endblock %}
+
+{% block body %}
+    {% if not games is empty %}
+        <h1>Votre panier</h1>
+        <div class="cart">
+            <div class="products">
+                {% for game in games %}
+                    <div class="product">
+                        <p>{{ game.name }}</p>
+                        <p>{{ game.description }}</p>
+                        <p>{{ cart.priceWithQuantity(game) }}</p>
+                        <p class="quantity">Quantité: {{ cart.productQuantity(game.id) }}
+                        <form method="POST" action="{{ path('cart_add', {id: game.id}) }}">
+                            <button type="submit">+</button>
+                        </form>
+                        <form method="POST" action="{{ path('cart_remove', {id: game.id}) }}">
+                            <button type="submit">-</button>
+                        </form>
+                    
+                    </div>
+                {% endfor %}
+            </div>
+        
+            <div class="total">
+                <p>Prix total: {{ cart.totalPrice(games) }}</p>
+            </div>
+            <form method="POST" action="{{ path('cart_destroy')}}">
+                <input type="hidden" name="_method" value="DELETE"/>
+                <button type="submit">Vider le panier</button>
+            </form
+    {% else %}
+        <h1>Panier vide</h1>
+    {% endif %}
+    </div>
+{% endblock %}

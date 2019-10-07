@@ -73,6 +73,19 @@ class ProductRepository extends ServiceEntityRepository
     */
 
     /**
+     * @param Array $ids
+     * @return Array
+     */
+    public function findInArray(array $ids): Array
+    {
+        $qb = $this->findVisibleQuery();
+
+        $qb->andWhere($qb->expr()->in('p.id', $ids));
+
+        return $qb->getQuery()->getResult();
+    }
+
+    /**
      * @return QueryBuilder
      */
     private function findVisibleQuery(): QueryBuilder {
@@ -82,4 +95,6 @@ class ProductRepository extends ServiceEntityRepository
             ->andwhere('p.visible = 1')
         ;
     }
+
+
 }
