@@ -7,7 +7,6 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\Extension\Core\Type\NumberType;
-use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
@@ -17,6 +16,7 @@ use Doctrine\ORM\EntityRepository;
 
 use App\Entity\Product;
 use App\Entity\Category;
+use App\Form\ProductDetailType;
 
 class ProductType extends AbstractType
 {
@@ -45,6 +45,7 @@ class ProductType extends AbstractType
             ->add('visible', CheckboxType::class, [
                 'invalid_message' => "La visibilité doit être de type boolean"
             ])
+            ->add('product_detail', ProductDetailType::class)
         ;
     }
 

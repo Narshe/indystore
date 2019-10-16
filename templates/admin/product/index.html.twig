@@ -9,7 +9,6 @@
                 <p>{{ game.name }}</p>
                 <p>Description: {{ game.description }}</p>
                 <p>Prix: {{ game.price }}</p>
-                <p>Stock: {{ game.stock }}</p>
                 <a href="{{ path('admin_game_edit', {id: game.id}) }}">Editer</a>
                 <form method="post" action="{{ path('admin_game_destroy', {id: game.id}) }}">
                     <input type="hidden" name="_method" value="DELETE" />

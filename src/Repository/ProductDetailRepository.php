@@ -19,6 +19,10 @@ class ProductDetailRepository extends ServiceEntityRepository
         parent::__construct($registry, ProductDetail::class);
     }
 
+    public function findTopSellProducts()
+    {   
+       
+    }
     // /**
     //  * @return ProductDetail[] Returns an array of ProductDetail objects
     //  */

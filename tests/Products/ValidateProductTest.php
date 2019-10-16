@@ -24,7 +24,7 @@ class ValidateProductTest extends WebTestCase
         $client->submitForm('Ajouter le produit', [
             'product[name]' => $name,
             'product[price]' => $price,
-            'product[stock]' => $stock,
+           // 'product[stock]' => $stock,
             'product[visible]' => $visible,
         ]);
        
@@ -40,8 +40,8 @@ class ValidateProductTest extends WebTestCase
             ["", 5.3,5,true,"Vous devez remplir le nom du produit"],
             ["name", null,5,true, "Vous devez renseigner le prix du produit"],
             ["name", "test",5,true, "Le prix doit être de type float"],
-            ["name", 5.3,null,true, "Vous devez renseigner la quatité du produit"],
-            ["name", 5.3,"test",true, "La quantité doit être de type integer"],
+            //["name", 5.3,null,true, "Vous devez renseigner la quatité du produit"],
+            //["name", 5.3,"test",true, "La quantité doit être de type integer"],
         ];
     }
 

@@ -52,22 +52,42 @@ class ProductRepository extends ServiceEntityRepository
             ->getOneOrNullResult()
         ;
    
-    } 
-    /*
-    public function findAllVisibleProductWithCategories(string $category)
+    }
+
+    /**
+     * @return Array
+     */
+    public function findTopSellProducts(): Array
     {
-        return $this->createQueryBuilder('p')
-            ->innerJoin('p.category', 'c')
-            ->select('p.id, p.name, p.description, p.price')
-            ->orderBy('p.created_at', 'ASC')
-            ->andwhere('p.visible = 1')
-            ->andWhere('c.name = :name')
-            ->setParameter('name', $category)
+
+        return $this->findVisibleQuery()
+            ->innerjoin('p.product_detail', 'product_detail')
+            ->orderBy('product_detail.soldNumber', 'DESC')
+            ->setMaxResults(5)
             ->getQuery()
             ->getResult()
         ;
     }
-    */
+
+    /**
+     * @param $option new|soon
+     * @return Array
+     */
+    public function findProductsDateInterval(string $option): Array
+    {
+
+        $qb = $this->findVisibleQuery();
+        
+        return $qb
+            ->innerjoin('p.product_detail', 'pde')
+            ->andWhere($qb->expr()->between('pde.releaseDate', ':date1', ':date2'))
+            ->setParameter('date1', $option === 'new' ? new \DateTime('-1 MONTH') : new \DateTime())
+            ->setParameter('date2', $option === 'new' ? new \DateTime() : new \DateTime('+1 MONTH'))
+            ->getQuery()
+            ->getResult()
+        ;
+
+    }
 
     /**
      * @param Array $ids

@@ -8,6 +8,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request;
 
 use App\Entity\Product;
+use App\Entity\ProductDetail;
 use App\Form\ProductType;
 
 class ProductController extends AbstractController
@@ -43,7 +44,6 @@ class ProductController extends AbstractController
         if($form->isSubmitted() && $form->isValid()) {
             
             $em = $this->getDoctrine()->getManager();
-
             $em->persist($product);
             $em->flush();
 

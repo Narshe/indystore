@@ -16,7 +16,7 @@ class ProductTest extends WebTestCase
         $crawler = $client->request('GET', '/games');
 
         $this->assertCount(
-            20,
+            50,
             $crawler->filter('.products div.product')
         );
     }
@@ -27,7 +27,7 @@ class ProductTest extends WebTestCase
         $client->xmlHttpRequest('GET', '/games');
 
         $this->assertEquals(
-            20,
+            50,
             count(json_decode($client->getResponse()->getContent(), true)["games"])
         );
     }
@@ -57,7 +57,7 @@ class ProductTest extends WebTestCase
         $product->setName("Nom de test");
         $product->setDescription("Description");
         $product->setPrice(200.25);
-        $product->setStock(10);
+       // $product->setStock(10);
 
         $client = $this->loginAs('admin');
         
@@ -68,10 +68,15 @@ class ProductTest extends WebTestCase
             'product[name]' => $product->getName(),
             'product[description]' => $product->getDescription(),
             'product[price]' => $product->getPrice(),
-            'product[stock]' => $product->getStock(),
-            'product[detail_id]' => $product->getDetailId(),
             'product[category]' => 1,
             'product[visible]' => $product->getVisible(),
+            'product[product_detail][stock]' => 3,
+            'product[product_detail][developer]' => "test",
+            'product[product_detail][publisher]' => "test",
+            'product[product_detail][soldNumber]' => 9,
+            'product[product_detail][releaseDate][month]' => 3,
+            'product[product_detail][releaseDate][day]' => 9,
+            'product[product_detail][releaseDate][year]' => 2019
         ]);
 
         $client->followRedirect();
@@ -115,7 +120,7 @@ class ProductTest extends WebTestCase
         $crawler = $client->followRedirect();
 
         $this->assertCount(
-            19,
+            49,
             $crawler->filter('.products div.product')
         );
     }
