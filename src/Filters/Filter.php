@@ -23,9 +23,8 @@ class Filter {
 
     public function run()
     {
-    
         foreach($this->request as $key => $param) {
-
+            
             $filter = $this->getClassName($key);
 
             if(class_exists($filter)) {

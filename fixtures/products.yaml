@@ -7,6 +7,5 @@ App\Entity\Product:
         updated_at: '<date_create()>'
         price: '<randomFloat(3,10,100)>'
         visible: 1
-        detail_id: 0
-        stock: '<randomDigit()>'
         tags: '[@tag*, @tag*]'
+        product_detail: '@product_detail<current()>'

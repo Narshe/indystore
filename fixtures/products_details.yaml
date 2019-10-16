@@ -1,0 +1,7 @@
+App\Entity\ProductDetail:
+    product_detail{1..20}:
+      stock: '<randomDigit()>'
+      developer: '<company()>'
+      publisher: '<company()>'
+      soldNumber: '<randomDigit()>'
+      releaseDate: '<dateTimeThisYear()>'

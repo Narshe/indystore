@@ -29,14 +29,9 @@ class ProductType extends AbstractType
             ->add('description', TextareaType::class, [
                 'label' => 'Description',
             ])
-            ->add('detail_id')
             ->add('price', NumberType::class, [
                 'label' => 'Prix',
                 'invalid_message' => "Le prix doit être de type float"
-            ])
-            ->add('stock', IntegerType::class, [
-                'label' => 'Quantité',
-                'invalid_message' => "La quantité doit être de type integer"
             ])
             ->add('category', EntityType::class, [
                 'class' => Category::class,

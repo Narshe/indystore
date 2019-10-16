@@ -38,11 +38,6 @@ class Product
     private $description;
 
     /**
-     * @ORM\Column(type="integer")
-     */
-    private $detail_id;
-
-    /**
      * @ORM\Column(type="float")
      * @Assert\NotBlank(
      *   message="Vous devez renseigner le prix du produit"
@@ -53,18 +48,6 @@ class Product
      * )
      */
     private $price;
-
-    /**
-     * @ORM\Column(type="integer")
-     * @Assert\NotBlank(
-     *   message="Vous devez renseigner la quatité du produit"
-     * )
-     * @Assert\Type(
-     *   type="integer",
-     *   message="La quantité doit être de type {{ type }}"
-     * )
-     */
-    private $stock;
 
     /**
      * @ORM\Column(type="datetime")
@@ -95,6 +78,12 @@ class Product
      * @ORM\ManyToMany(targetEntity="App\Entity\Tag", mappedBy="products")
      */
     private $tags;
+
+    /**
+     * @ORM\OneToOne(targetEntity="App\Entity\ProductDetail", cascade={"persist", "remove"})
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private $product_detail;
 
 
     public function __construct()
@@ -136,18 +125,6 @@ class Product
         return $this;
     }
 
-    public function getDetailId(): ?int
-    {
-        return $this->detail_id;
-    }
-
-    public function setDetailId(int $detail_id): self
-    {
-        $this->detail_id = $detail_id;
-
-        return $this;
-    }
-
     public function getPrice(): ?float
     {
         return $this->price;
@@ -156,18 +133,6 @@ class Product
     public function setPrice(float $price): self
     {
         $this->price = $price;
-
-        return $this;
-    }
-
-    public function getStock(): ?int
-    {
-        return $this->stock;
-    }
-
-    public function setStock(int $stock): self
-    {
-        $this->stock = $stock;
 
         return $this;
     }
@@ -251,6 +216,18 @@ class Product
             $this->tags->removeElement($tag);
             $tag->removeProduct($this);
         }
+
+        return $this;
+    }
+
+    public function getProductDetail(): ?ProductDetail
+    {
+        return $this->product_detail;
+    }
+
+    public function setProductDetail(ProductDetail $product_detail): self
+    {
+        $this->product_detail = $product_detail;
 
         return $this;
     }
