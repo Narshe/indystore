@@ -99,7 +99,7 @@ class SecurityControllerTest extends WebTestCase
     {
         return [
             ['hadrien.giraudeau@gmail.com', '12345', 'Invalid credentials.'],
-            ['unknown@gmail.com', '123456', 'Email could not be found'],
+            ['unknown@gmail.com', '123456', 'Cette adresse email n\'est associé à aucun compte'],
         ];
     }
 

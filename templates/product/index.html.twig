@@ -3,21 +3,67 @@
 {% block title %}Jeux{% endblock %}
 
 {% block body %}
-
-    <h1>{{ category is same as ('all')? "Nos produits" : "Nos #{category}" }}</h1>
-    <div class="products">
-        {% for game in games %}
-            <div class="product">
-                <p><a href="{{ path('games_show', {id: game.id}) }}">{{ game.name }}</a></p>
-                <p>Description: {{ game.description }}</p>
-                <p>Prix: {{ game.price }}</p>
-                <form method="POST" action="{{ path('cart_add', {id:game.id}) }}">
-                    <button type="submit">Ajouter au panier</button>
-                </form>
-            </div>
-        {% endfor %}
-    </div>
+    {% for tag in taglist %}
+        <span class="tags" data-tag="{{ tag.title }} ">{{ tag.title }}</span>
+    {% endfor %}
+    {% if games %}
+        <h1>{{ games[0].category_name is not defined ? "Nos produits" : "Nos #{games[0].category_name}" }}</h1>
+        <div class="products">
+            {% for game in games %}
+                <div class="product">
+                    <p><a href="{{ path('games_show', {id: game.id}) }}">{{ game.name }}</a></p>
+                    <p>Description: {{ game.description }}</p>
+                    <p>Prix: {{ game.price }}</p>
+                    <form method="POST" action="{{ path('cart_add', {id:game.id}) }}">
+                        <button type="submit">Ajouter au panier</button>
+                    </form>
+                </div>
+            {% endfor %}
+        </div>
+    {% else %}
+        <h1>Aucun jeu dans cette catégorie</h1>
+    {% endif %}
+    
     <script>
+
+        const a = document.querySelectorAll('.tags');
+        a.forEach((obj) => {
+
+            obj.addEventListener('click', function(e) {
+
+                e.preventDefault();
+
+                const currentTag = this.dataset.tag.trim()
+                let url = new URL(window.location.href);
+                let searchParams = url.searchParams.get('search');
+                let search = [];
+
+                if (searchParams !== null && searchParams !== "") {
+
+                    search = searchParams.trim().split(',')
+                    search = search.indexOf(currentTag)  !== -1 ? search.filter((el) => el !== currentTag) : [...search, currentTag]
+                    
+                } else {
+                    search = [...search, currentTag];
+                }
+
+               let uri = search.length > 0 ? `${search.join(',').trim()}` : ''
+               if(uri != '') {
+
+                url.searchParams.set('search', uri)
+
+               } else {
+
+                 url.searchParams.delete('search')
+
+               }
+                window.location.href = url.href
+                
+                
+            });
+        })
+    
+    </script>
 
 {% endblock %}
 

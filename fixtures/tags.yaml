@@ -1,0 +1,6 @@
+App\Entity\Tag:
+    tag{1..10}:
+        title: '<word()>'
+        products: '[@product*, @product*]'
+    
+

@@ -7,6 +7,9 @@ use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Common\Persistence\ManagerRegistry;
 use Doctrine\ORM\QueryBuilder;
 
+use App\Filters\Filter;
+
+
 /**
  * @method Product|null find($id, $lockMode = null, $lockVersion = null)
  * @method Product|null findOneBy(array $criteria, array $orderBy = null)
@@ -24,21 +27,15 @@ class ProductRepository extends ServiceEntityRepository
      * @param string $category
      * @return Array
      */
-    public function findAllVisible(string $category): Array
+    public function findAllVisible(array $params): Array
     {
         $query = $this->findVisibleQuery()
                     ->orderBy('p.created_at', 'ASC');
 
-        if ($category !== 'all') {
+        $filters = new Filter($params, $query, $this->getEntityManager());
+        $filters->run();
 
-            $query->innerJoin('p.category', 'c')
-                ->addSelect('c.name as category_name')
-                ->andWhere('c.name = :name')
-                ->setParameter('name', $category)
-            ;
-        }
-
-        return $query->getQuery()->getResult();
+        return $filters->getFilteredQuery()->getQuery()->getResult();
     }
 
     /**

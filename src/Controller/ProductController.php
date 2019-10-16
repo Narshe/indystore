@@ -9,6 +9,9 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Entity;
 
 use App\Entity\Product;
 use App\Entity\Category;
+use App\Entity\Tag;
+use App\Filters\Filter;
+
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request;
 
@@ -24,24 +27,20 @@ class ProductController extends AbstractController
 
         $doctrine = $this->getDoctrine();
 
-        $cat = $request->query->get('category');
+        $tagList = $doctrine->getRepository(Tag::class)->findTagsName();
 
-        $category = $cat ? $doctrine->getRepository(Category::class)->findOneBy(['name' => $cat]) : null;
-        $category = $category ? $category->getName() : 'all';
+        $products = $doctrine->getRepository(Product::class)->findAllVisible($request->query->all());
 
-        $products = $doctrine->getRepository(Product::class)->findAllVisible($category);
-        
-        
         if ($request->isXmlHttpRequest()) {
             return $this->json([
                 'games' => $products,
-                'category' => $category
+                'taglist' => $tagList
             ]);
         }
         
         return $this->render('product/index.html.twig', [
             'games' => $products,
-            'category' => $category
+            'taglist' => $tagList
         ]);
     }
 

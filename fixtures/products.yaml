@@ -5,7 +5,8 @@ App\Entity\Product:
         created_at: '<date_create()>'
         category: '@category*'
         updated_at: '<date_create()>'
-        price: '<randomDigit()>'
+        price: '<randomFloat(3,10,100)>'
         visible: 1
         detail_id: 0
         stock: '<randomDigit()>'
+        tags: '[@tag*, @tag*]'
