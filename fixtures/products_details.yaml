@@ -4,4 +4,5 @@ App\Entity\ProductDetail:
       developer: '<company()>'
       publisher: '<company()>'
       soldNumber: '<randomDigit()>'
+      discount: '50%? @discount*'
       releaseDate: '<dateTimeBetween("-3 month","+3 month")>'

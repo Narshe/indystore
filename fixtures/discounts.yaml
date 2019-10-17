@@ -1,0 +1,16 @@
+App\Entity\Discount:
+    discount1:
+      title: 'Méga promo'
+      amount: 70
+      begin_at: '<dateTime()>'
+      end_at: '<dateTime("+1 MONTH")>'
+    discount2:
+      title: 'Moyenne promo'
+      amount: 30
+      begin_at: '<dateTime()>'
+      end_at: '<dateTime("+1 MONTH")>'
+    discount3:
+      title: 'Petite promo'
+      amount: 10
+      begin_at: '<dateTime()>'
+      end_at: '<dateTime("+1 MONTH")>'     

@@ -1,0 +1,36 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Promotion - {{ discount.title }}{% endblock %}
+
+{% block body %}
+    <h1>Promotion</h1>
+
+    <table class="table">
+        <tbody>
+            <tr>
+                <th>Id</th>
+                <td>{{ discount.id }}</td>
+            </tr>
+            <tr>
+                <th>Titre</th>
+                <td>{{ discount.title }}</td>
+            </tr>
+            <tr>
+                <th>Montant (en %)</th>
+                <td>{{ discount.amount }}</td>
+            </tr>
+            <tr>
+                <th>Commence le</th>
+                <td>{{ discount.beginAt ? discount.beginAt|date('Y-m-d H:i:s') : '' }}</td>
+            </tr>
+            <tr>
+                <th>Fini le</th>
+                <td>{{ discount.endAt ? discount.endAt|date('Y-m-d H:i:s') : '' }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <a href="{{ path('admin_discount_edit', {'id': discount.id}) }}">edit</a>
+
+    {{ include('admin/discount/_delete_form.html.twig') }}
+{% endblock %}

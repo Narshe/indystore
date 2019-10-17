@@ -49,6 +49,11 @@ class ProductDetail
      */
     private $releaseDate;
 
+    /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\Discount", inversedBy="productDetails")
+     */
+    private $discount;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -110,6 +115,18 @@ class ProductDetail
     public function setReleaseDate(\DateTimeInterface $releaseDate): self
     {
         $this->releaseDate = $releaseDate;
+
+        return $this;
+    }
+
+    public function getDiscount(): ?Discount
+    {
+        return $this->discount;
+    }
+
+    public function setDiscount(?Discount $discount): self
+    {
+        $this->discount = $discount;
 
         return $this;
     }

@@ -1,0 +1,40 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Promotions{% endblock %}
+
+{% block body %}
+    <h1>Les promotions</h1>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Titre</th>
+                <th>Montant (en %)</th>
+                <th>Commence le</th>
+                <th>Fini le</th>
+                <th>actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for discount in discounts %}
+            <tr>
+                <td>{{ discount.id }}</td>
+                <td><a href="{{ path('admin_discount_show', {'id': discount.id}) }}">{{ discount.title }}</a></td>
+                <td>{{ discount.amount }}</td>
+                <td>{{ discount.beginAt ? discount.beginAt|date('Y-m-d H:i:s') : '' }}</td>
+                <td>{{ discount.endAt ? discount.endAt|date('Y-m-d H:i:s') : '' }}</td>
+                <td>
+                    <a href="{{ path('admin_discount_edit', {'id': discount.id}) }}">edit</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="6">Aucune promotion pour le moment</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <a class="btn btn-primary" href="{{ path('admin_discount_new') }}">Nouvelle promotion</a>
+{% endblock %}

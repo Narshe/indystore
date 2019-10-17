@@ -70,12 +70,11 @@ class ProductRepository extends ServiceEntityRepository
     }
 
     /**
-     * @param $option new|soon
+     * @param string $option new|soon
      * @return Array
      */
     public function findProductsDateInterval(string $option): Array
     {
-
         $qb = $this->findVisibleQuery();
         
         return $qb
@@ -86,8 +85,27 @@ class ProductRepository extends ServiceEntityRepository
             ->getQuery()
             ->getResult()
         ;
-
     }
+
+      /**
+     * @param int|null $limit
+     * @return Array
+     */
+    public function findDiscountedProduct(?int $limit = null): Array
+    {
+        $qb = $this->findVisibleQuery();
+        
+        return $qb
+            ->addSelect('d.amount')
+            ->innerjoin('p.product_detail', 'pde')
+            ->andWhere('pde.discount > 0')
+            ->innerJoin('pde.discount', 'd')
+            ->setMaxResults($limit)
+            ->getQuery()
+            ->getResult()
+        ;
+    }
+
 
     /**
      * @param Array $ids
