@@ -2,23 +2,28 @@
 <html>
     <head>
         <meta charset="UTF-8">
-        <title>{% block title %}Welcome!{% endblock %}</title>
+        <title>{% block title %}BIENvenue{% endblock %}</title>
         {% block stylesheets %}{% endblock %}
     </head>
     <body>
         <header>
-            {% if is_granted('IS_AUTHENTICATED_FULLY') or is_granted('IS_AUTHENTICATED_REMEMBERED') %}
-                <a href="#">{{ app.user.email }}</a>
-                {% if is_granted('ROLE_ADMIN') %}
-                    <a href="{{ path('admin_home') }}">Accueil admin</a>
+            <nav class="navbar">
+                <a href="{{ path('home') }}">Accueil</a>
+                {% if is_granted('IS_AUTHENTICATED_FULLY') or is_granted('IS_AUTHENTICATED_REMEMBERED') %}
+                    <a href="#">{{ app.user.email }}</a>
+                    {% if is_granted('ROLE_ADMIN') %}
+                        <a href="{{ path('admin_home') }}">Accueil admin</a>
+                    {% endif %}
+                    <a href="{{ path('app_logout')}}">Se déconnecter</a>
+                {% else %}
+                    <a href="{{ path('app_login') }}">Connexion</a>
+                    <a href="{{ path('app_register') }}">S'enregistrer</a>
                 {% endif %}
-                <a href="{{ path('app_logout')}}">Se déconnecter</a>
-            {% else %}
-                <a href="{{ path('app_login') }}">Connexion</a>
-                <a href="{{ path('app_register') }}">S'enregistrer</a>
-            {% endif %}
                 <a href="{{ path('games_index') }}">Nos produits</a>
-                 {{ render_esi(path('category_index')) }}
+                <div class="categories">
+                    {{ render_esi(path('category_index')) }}
+                </div>
+            </nav>
         </header>
         {% block body %}{% endblock %}
         {% block javascripts %}{% endblock %}
