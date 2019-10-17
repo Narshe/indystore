@@ -10,7 +10,7 @@ use Doctrine\Migrations\AbstractMigration;
 /**
  * Auto-generated Migration: Please modify to your needs!
  */
-final class Version20191016143853 extends AbstractMigration
+final class Version20191017120346 extends AbstractMigration
 {
     public function getDescription() : string
     {
@@ -33,7 +33,7 @@ final class Version20191016143853 extends AbstractMigration
         $this->abortIf($this->connection->getDatabasePlatform()->getName() !== 'mysql', 'Migration can only be executed safely on \'mysql\'.');
 
         $this->addSql('ALTER TABLE product DROP FOREIGN KEY FK_D34A04ADB670B536');
+        $this->addSql('DROP TABLE product_detail');
         $this->addSql('DROP INDEX UNIQ_D34A04ADB670B536 ON product');
-        $this->addSql('ALTER TABLE product ADD stock INT NOT NULL, CHANGE product_detail_id detail_id INT NOT NULL');
     }
 }
