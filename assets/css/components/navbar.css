@@ -1,0 +1,12 @@
+.navbar {
+  height: 15vh;
+  background-color: #2C2C2C;
+  flex-wrap: nowrap;
+   a {
+    color: white;
+    text-decoration: none;
+  }
+}
+.categories {
+  list-style: none;
+}
