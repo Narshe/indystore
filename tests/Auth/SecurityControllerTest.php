@@ -29,8 +29,7 @@ class SecurityControllerTest extends WebTestCase
 
         $crawler = $this->client->followRedirect();
         
-        $this->assertPageTitleSame('Accueil');
-        $this->assertSelectorTextContains('a', $email);
+        $this->assertPageTitleSame('IndyStore');
 
     }
 
@@ -89,7 +88,7 @@ class SecurityControllerTest extends WebTestCase
 
         $crawler = $this->client->followRedirect();
 
-        $this->assertPageTitleSame('Accueil');
+        $this->assertPageTitleSame('IndyStore');
     }
 
     /**

@@ -23,7 +23,7 @@ class RegistrationControllerTest extends WebTestCase
         $crawler = $client->followRedirect();        
         $user = $client->getContainer()->get('doctrine')->getRepository(User::class)->findOneBy(['email' => $email]);
 
-        $this->assertPageTitleSame('Accueil');
+        $this->assertPageTitleSame('IndyStore');
         
         $this->assertSame($user->getEmail(), $email);
     }

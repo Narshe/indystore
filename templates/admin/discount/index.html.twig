@@ -18,14 +18,15 @@
         </thead>
         <tbody>
         {% for discount in discounts %}
-            <tr>
+            <tr class="discount-row">
                 <td>{{ discount.id }}</td>
                 <td><a href="{{ path('admin_discount_show', {'id': discount.id}) }}">{{ discount.title }}</a></td>
                 <td>{{ discount.amount }}</td>
                 <td>{{ discount.beginAt ? discount.beginAt|date('Y-m-d H:i:s') : '' }}</td>
                 <td>{{ discount.endAt ? discount.endAt|date('Y-m-d H:i:s') : '' }}</td>
                 <td>
-                    <a href="{{ path('admin_discount_edit', {'id': discount.id}) }}">edit</a>
+                    <a href="{{ path('admin_discount_edit', {'id': discount.id}) }}">Edit</a>
+                    {{ include('admin/discount/_delete_form.html.twig', {'discount': discount}) }}
                 </td>
             </tr>
         {% else %}

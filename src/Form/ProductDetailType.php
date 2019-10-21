@@ -19,11 +19,30 @@ class ProductDetailType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('stock', IntegerType::class)
             ->add('developer', TextType::class)
             ->add('publisher', TextType::class)
-            ->add('soldNumber', IntegerType::class)
-            ->add('releaseDate', DateType::class)
+            ->add('stock', IntegerType::class, [
+                'invalid_message' => 'Veuillez entrer un nombre',
+                'attr' => [
+                    'value' => 0
+                ]
+            ])
+            ->add('soldNumber', IntegerType::class, [
+                'invalid_message' => 'Veuillez entrer un nombre',
+                'attr' => [
+                    'value' => 0
+                ]
+            ])
+            ->add('releaseDate', DateType::class, [
+                'years' => range(1980, 2025),
+                'format' => 'yyyy-MM-dd',
+                'placeholder' => [
+                    'year' => 'Année',
+                    'month' => 'Mois',
+                    'day' => 'Jour'
+                ],
+                'invalid_message' => 'Veuillez entrer une date valide'
+            ])
             ->add('discount', EntityType::class, [
                 'class' => Discount::class,
                 'choice_label' => 'discount_title',

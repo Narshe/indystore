@@ -82,6 +82,7 @@ class Product
     /**
      * @ORM\OneToOne(targetEntity="App\Entity\ProductDetail", cascade={"persist", "remove"})
      * @ORM\JoinColumn(nullable=false)
+     * @Assert\Valid
      */
     private $product_detail;
 
@@ -92,7 +93,6 @@ class Product
         $this->created_at = new \DateTime();
         $this->updated_at = new \DateTime();
         $this->visible = true;
-        $this->detail_id = 0;
         $this->tags = new ArrayCollection();
     }
 

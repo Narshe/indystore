@@ -9,6 +9,7 @@ use Symfony\Component\HttpFoundation\Request;
 
 use App\Entity\Product;
 use App\Entity\ProductDetail;
+use App\Form\ProductDetailType;
 use App\Form\ProductType;
 
 class ProductController extends AbstractController
@@ -67,7 +68,7 @@ class ProductController extends AbstractController
         $form = $this->createForm(ProductType::class, $product, [
             'method' => 'PUT',
         ]);
-
+        
         $form->handleRequest($request);
 
          if($form->isSubmitted() && $form->isValid()) {

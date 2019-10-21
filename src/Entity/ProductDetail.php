@@ -18,34 +18,39 @@ class ProductDetail
     private $id;
 
     /**
-     * @ORM\Column(type="integer")
+     * @ORM\Column(type="integer", options={"default":0})
+     * @Assert\PositiveOrZero(message="Le nombre doit être supérieur ou égal à zero")
      * @Assert\NotBlank(
-     *   message="Vous devez renseigner la quatité du produit"
-     * )
-     * @Assert\Type(
-     *   type="integer",
-     *   message="La quantité doit être de type {{ type }}"
+     *  message="Vous devez entrer un nombre"
      * )
      */
     private $stock;
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Assert\NotBlank(
+     *  message="Ce champ ne peut pas être vide"
+     * )
+     * 
      */
     private $developer;
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Assert\NotBlank(
+     *  message="Ce champ ne peut pas être vide"
+     * )
      */
     private $publisher;
 
     /**
      * @ORM\Column(type="integer")
+     * @Assert\PositiveOrZero(message="Le nombre doit être supérieur ou égal à zero")
      */
     private $soldNumber;
 
     /**
-     * @ORM\Column(type="datetime")
+     * @ORM\Column(type="datetime", nullable=true)
      */
     private $releaseDate;
 
@@ -53,6 +58,11 @@ class ProductDetail
      * @ORM\ManyToOne(targetEntity="App\Entity\Discount", inversedBy="productDetails")
      */
     private $discount;
+    
+    public function __construct()
+    {
+        $this->releaseDate = new \DateTime();
+    }
 
     public function getId(): ?int
     {
@@ -64,7 +74,7 @@ class ProductDetail
         return $this->stock;
     }
 
-    public function setStock(int $stock): self
+    public function setStock(?int $stock): self
     {
         $this->stock = $stock;
 
@@ -112,7 +122,7 @@ class ProductDetail
         return $this->releaseDate;
     }
 
-    public function setReleaseDate(\DateTimeInterface $releaseDate): self
+    public function setReleaseDate(?\DateTimeInterface $releaseDate): self
     {
         $this->releaseDate = $releaseDate;
 

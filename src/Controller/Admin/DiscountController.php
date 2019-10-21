@@ -39,7 +39,7 @@ class DiscountController extends AbstractController
             $entityManager->persist($discount);
             $entityManager->flush();
 
-            return $this->redirectToRoute('admin/discount_index');
+            return $this->redirectToRoute('admin_discount_index');
         }
 
         return $this->render('admin/discount/new.html.twig', [
@@ -69,7 +69,7 @@ class DiscountController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $this->getDoctrine()->getManager()->flush();
 
-            return $this->redirectToRoute('admin/discount_index');
+            return $this->redirectToRoute('admin_discount_index');
         }
 
         return $this->render('admin/discount/edit.html.twig', [
@@ -89,6 +89,6 @@ class DiscountController extends AbstractController
             $entityManager->flush();
         }
 
-        return $this->redirectToRoute('admin/discount_index');
+        return $this->redirectToRoute('admin_discount_index');
     }
 }

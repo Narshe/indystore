@@ -5,9 +5,13 @@ namespace App\Entity;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
+
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\DiscountRepository")
+ * @UniqueEntity(fields={"title"}, message="Cette promotion existe déjà")
  */
 class Discount
 {
@@ -20,21 +24,32 @@ class Discount
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Assert\NotBlank(message="Vous devez remplir le titre")
      */
     private $title;
 
     /**
      * @ORM\Column(type="integer")
+     * @Assert\NotBlank(message="Vous devez entrer un montant")
+     * @Assert\Positive(message="Le montant doit être supérieur à zero")
      */
     private $amount;
 
     /**
      * @ORM\Column(type="datetime")
+     * @Assert\GreaterThanOrEqual(
+     *  value="today",
+     *  message="La date de début doit être supérieur ou égal à la date du jour"
+     * )
      */
     private $begin_at;
 
     /**
      * @ORM\Column(type="datetime")
+     * @Assert\GreaterThan(
+     *  propertyPath="begin_at",
+     *  message="La date de fin doit être supérieur à la date de début"
+     * )
      */
     private $end_at;
 
@@ -43,9 +58,12 @@ class Discount
      */
     private $productDetails;
 
+
     public function __construct()
     {
         $this->productDetails = new ArrayCollection();
+        $this->begin_at = new \DateTime();
+        $this->end_at = new \DateTime('+1 DAY');
     }
 
     public function getId(): ?int
