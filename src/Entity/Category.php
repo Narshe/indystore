@@ -112,7 +112,7 @@ class Category
     /**
      * @return ArrayCollection
      */
-    public function getProducts(): ArrayCollection
+    public function getProducts()
     {
         return $this->products;
     }

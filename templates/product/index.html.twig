@@ -3,28 +3,49 @@
 {% block title %}Jeux{% endblock %}
 
 {% block body %}
-    {% for tag in taglist %}
-        <span class="tags" data-tag="{{ tag.title }} ">{{ tag.title }}</span>
-    {% endfor %}
+    <h3>Les tags disponible</h3>
+    <div class="tags">
+      {% for tag in taglist %}
+        <a href="#" class="tags" data-tag="{{ tag.title }} ">{{ tag.title }}</a>
+      {% endfor %}
+    </div>
     {% if games %}
-        <h1>{{ games[0].category_name is not defined ? "Nos produits" : "Nos #{games[0].category_name}" }}</h1>
-        <div class="products">
-            {% for game in games %}
-                <div class="product">
-                    <p><a href="{{ path('games_show', {id: game.id}) }}">{{ game.name }}</a></p>
-                    <p>Description: {{ game.description }}</p>
-                    <p>Prix: {{ game.price }}</p>
-                    <form method="POST" action="{{ path('cart_add', {id:game.id}) }}">
-                        <button type="submit">Ajouter au panier</button>
-                    </form>
-                </div>
-            {% endfor %}
+      <h1>{{ games[0].category.name is not defined ? "Nos produits" : "Nos #{games[0].category.name}" }}</h1>
+      <div class="products">
+        {% for game in games %}
+          <div class="product">
+            <p><a href="{{ path('games_show', {id: game.id}) }}">{{ game.name }}</a></p>
+            <p>Description: {{ game.description }}</p>
+            <span>Prix:</span>
+            <p class="price">{{ game.price }}</p>
+            {% if game.productDetail.discount %}
+              <p>  Discounted {{ game.discountedPrice }} </p>
+            {% endif %}
+            <div class="product-tags">
+              <h4>Les tags</h4>
+                {% for tag in game.tags %}
+                    <span class="badge badge-dark">{{ tag.title }}</span>
+                {% endfor %}
+              </div>
+            <form method="POST" action="{{ path('cart_add', {id:game.id}) }}">
+              <button type="submit">Ajouter au panier</button>
+            </form>
+          </div>
+        {% endfor %}
+        <div class="navigation">
+          {{ knp_pagination_render(games) }}
         </div>
+      </div>
     {% else %}
-        <h1>Aucun jeu dans cette catégorie</h1>
+      <h1>Aucun jeu dans cette catégorie</h1>
     {% endif %}
     
-    <script>
+    <script>  
+        fetch('http://localhost:8000/games', {
+          'headers': {
+            'X-Requested-With': 'XMLHttpRequest'
+          }
+        })
 
         const a = document.querySelectorAll('.tags');
         a.forEach((obj) => {
@@ -36,6 +57,12 @@
                 const currentTag = this.dataset.tag.trim()
                 let url = new URL(window.location.href);
                 let searchParams = url.searchParams.get('search');
+                let page = url.searchParams.get('page');
+
+                if(page) {
+                  url.searchParams.set('page', 1)
+                }
+
                 let search = [];
 
                 if (searchParams !== null && searchParams !== "") {
@@ -57,7 +84,8 @@
                  url.searchParams.delete('search')
 
                }
-                window.location.href = url.href
+
+              window.location.href = url.href
                 
                 
             });

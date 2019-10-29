@@ -3,22 +3,22 @@
 {% block title %}Produits{% endblock %}
 
 {% block body %}
-    <div class="products">
-        {% for game in games %}
-            <div class="product">
-                <p>{{ game.name }}</p>
-                <p>Description: {{ game.description }}</p>
-                <p>Prix: {{ game.price }}</p>
-                <a href="{{ path('admin_game_edit', {id: game.id}) }}">Editer</a>
-                <form method="post" action="{{ path('admin_game_destroy', {id: game.id}) }}">
-                    <input type="hidden" name="_method" value="DELETE" />
-                    <input type="hidden" name="_csrf_token" value="{{ csrf_token('delete_product') }}">
-                    <button type="submit" name="delete_button">Supprimer</button>
-                </form>
-            </div>
-        {% endfor %}
-    </div>
-    <div class="create_product">
-        <button><a href="{{ path('admin_game_new') }}">Ajouter un produit</button>
-    </div>
+  <div class="products">
+    {% for game in games %}
+      <div class="product">
+        <p>{{ game.name }}</p>
+        <p>Description: {{ game.description }}</p>
+        <p>Prix: {{ game.price }}</p>
+        <a href="{{ path('admin_game_edit', {id: game.id}) }}">Editer</a>
+        <form method="post" action="{{ path('admin_game_destroy', {id: game.id}) }}">
+          <input type="hidden" name="_method" value="DELETE" />
+          <input type="hidden" name="_csrf_token" value="{{ csrf_token('delete_product') }}">
+          <button type="submit" name="delete_button">Supprimer</button>
+        </form>
+      </div>
+    {% endfor %}
+  </div>
+  <div class="create_product">
+    <button><a href="{{ path('admin_game_new') }}">Ajouter un produit</button>
+  </div>
 {% endblock %}

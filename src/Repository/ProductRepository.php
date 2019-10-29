@@ -6,9 +6,8 @@ use App\Entity\Product;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Common\Persistence\ManagerRegistry;
 use Doctrine\ORM\QueryBuilder;
-
 use App\Filters\Filter;
-
+use Doctrine\ORM\Query;
 
 /**
  * @method Product|null find($id, $lockMode = null, $lockVersion = null)
@@ -24,34 +23,33 @@ class ProductRepository extends ServiceEntityRepository
     }
 
     /**
-     * @param string $category
+     * @param Array $params
      * @return Array
      */
-    public function findAllVisible(array $params): Array
+    public function findAllVisibleQuery(array $params): Query
     {
         $query = $this->findVisibleQuery()
-                    ->orderBy('p.created_at', 'ASC');
-
+                    ->orderBy('pde.releaseDate', 'DESC')
+        ;
+        
         $filters = new Filter($params, $query, $this->getEntityManager());
         $filters->run();
 
-        return $filters->getFilteredQuery()->getQuery()->getResult();
+        return $filters->getFilteredQuery()->getQuery();
     }
 
     /**
      * @param int $id
      * @return Array|null
      */
-    public function findOneVisible(int $id): ?Array
+    public function findOneVisible(int $id): ?Product
     {
         return $this->findVisibleQuery()
-            ->andwhere("p.id = {$id}")
-            ->innerJoin('p.category', 'c')
-            ->addSelect('c.name as category_name')
+            ->andwhere("p.id = :id")
+            ->setParameter('id', $id)
             ->getQuery()
             ->getOneOrNullResult()
         ;
-   
     }
 
     /**
@@ -61,8 +59,7 @@ class ProductRepository extends ServiceEntityRepository
     {
 
         return $this->findVisibleQuery()
-            ->innerjoin('p.product_detail', 'product_detail')
-            ->orderBy('product_detail.soldNumber', 'DESC')
+            ->orderBy('pde.soldNumber', 'DESC')
             ->setMaxResults(5)
             ->getQuery()
             ->getResult()
@@ -76,9 +73,8 @@ class ProductRepository extends ServiceEntityRepository
     public function findProductsDateInterval(string $option): Array
     {
         $qb = $this->findVisibleQuery();
-        
+
         return $qb
-            ->innerjoin('p.product_detail', 'pde')
             ->andWhere($qb->expr()->between('pde.releaseDate', ':date1', ':date2'))
             ->setParameter('date1', $option === 'new' ? new \DateTime('-1 MONTH') : new \DateTime())
             ->setParameter('date2', $option === 'new' ? new \DateTime() : new \DateTime('+1 MONTH'))
@@ -92,14 +88,10 @@ class ProductRepository extends ServiceEntityRepository
      * @return Array
      */
     public function findDiscountedProduct(?int $limit = null): Array
-    {
-        $qb = $this->findVisibleQuery();
-        
-        return $qb
+    {    
+        return $this->findVisibleQuery()
             ->addSelect('d.amount')
-            ->innerjoin('p.product_detail', 'pde')
             ->andWhere('pde.discount > 0')
-            ->innerJoin('pde.discount', 'd')
             ->setMaxResults($limit)
             ->getQuery()
             ->getResult()
@@ -115,9 +107,12 @@ class ProductRepository extends ServiceEntityRepository
     {
         $qb = $this->findVisibleQuery();
 
-        $qb->andWhere($qb->expr()->in('p.id', $ids));
+        return $qb
+            ->andWhere($qb->expr()->in('p.id', $ids))
+            ->getQuery()
+            ->getResult()
+        ;
 
-        return $qb->getQuery()->getResult();
     }
 
     /**
@@ -126,9 +121,14 @@ class ProductRepository extends ServiceEntityRepository
     private function findVisibleQuery(): QueryBuilder {
 
         return $this->createQueryBuilder('p')
-            ->select('p.id, p.name, p.description, p.price')
+            ->join('p.tags', 't')
+            ->join('p.category', 'c')
+            ->innerjoin('p.product_detail', 'pde')
+            ->leftjoin('pde.discount', 'd')
+            ->addSelect('pde, d, t, c')
             ->andwhere('p.visible = 1')
         ;
+
     }
 
 

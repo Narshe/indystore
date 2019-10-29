@@ -3,10 +3,15 @@
 {% block title %}Produit{% endblock %}
 
 {% block body %}
-    <div class="product">
-        <p>{{ game.name }}</p>
-        <p>Description: {{ game.description }}</p>
-        <p>Prix: {{ game.price }}</p>
-        <p>Categorie: {{ game.category_name }}
+  <div class="product">
+    <p>{{ game.name }}</p>
+    <p>Description: {{ game.description }}</p>
+    <p>Prix: {{ game.price }}</p>
+    <p>Categorie: {{ game.category.name }}
+    <div class="tags">
+      {% for tag in game.tags %}
+        <span class="badge badge-dark">{{ tag.title }}</span>
+      {% endfor %}
     </div>
+  </div>
 {% endblock %}

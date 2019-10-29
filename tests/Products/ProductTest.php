@@ -16,7 +16,7 @@ class ProductTest extends WebTestCase
         $crawler = $client->request('GET', '/games');
 
         $this->assertCount(
-            50,
+            25,
             $crawler->filter('.products div.product')
         );
     }
@@ -27,8 +27,8 @@ class ProductTest extends WebTestCase
         $client->xmlHttpRequest('GET', '/games');
 
         $this->assertEquals(
-            50,
-            count(json_decode($client->getResponse()->getContent(), true)["games"])
+            25,
+            count(json_decode($client->getResponse()->getContent(), true)["products"])
         );
     }
     
@@ -36,7 +36,7 @@ class ProductTest extends WebTestCase
     {   
         $client = $this->loginAs('guest');
         $client->xmlHttpRequest('GET', '/games/10');
-
+        
         $this->assertNotNull(json_decode($client->getResponse()->getContent(), true));
     }
 

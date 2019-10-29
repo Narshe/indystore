@@ -29,9 +29,5 @@ class PriceFilter implements FilterInterface{
         ;
     }
 
-    private function getTags(array $titles): Array
-    {
-        return $this->em->getRepository(Tag::class)->findBy(['title' => $titles]);
-    }
 
 }

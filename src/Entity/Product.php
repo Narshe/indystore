@@ -16,7 +16,7 @@ use App\Entity\Category;
  * @UniqueEntity("name")
  */
 class Product
-{
+{   
     /**
      * @ORM\Id()
      * @ORM\GeneratedValue()
@@ -232,4 +232,15 @@ class Product
         return $this;
     }
 
+    public function getDiscountedPrice(): float
+    {
+        if($this->getProductDetail()->getDiscount()) {
+
+            $amount = $this->getProductDetail()->getDiscount()->getAmount();
+
+            return $this->price - (($this->price*$amount)/100);
+        }
+
+        return $this->price;
+    }
 }

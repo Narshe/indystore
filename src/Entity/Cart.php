@@ -4,6 +4,8 @@ namespace App\Entity;
 
 use Doctrine\Common\Collections\ArrayCollection;
 
+use App\Entity\Product;
+
 class Cart
 {   
 
@@ -61,9 +63,9 @@ class Cart
      * @param array $product
      * @return float
      */
-    public function getPriceWithQuantity(array $product): float
+    public function getPriceWithQuantity(Product $product): float
     {
-        return $product["price"] * $this->getProductQuantity($product["id"]);
+        return $product->getDiscountedPrice() * $this->getProductQuantity($product->getId());
     }
 
     /**
